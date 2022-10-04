@@ -1,39 +1,54 @@
-import React from 'react';
-import L from 'leaflet';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import React, { useState, useRef } from 'react';
+import {
+  FeatureGroup,
+  MapContainer,
+  Marker,
+  Polyline,
+  TileLayer,
+} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import './App.scss';
-
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-});
-
-L.Marker.prototype.options.icon = DefaultIcon;
+import L from 'leaflet';
 
 type Location = [number, number];
 
-const zoom = 14.2;
-const location: Location = [47.22371511263003, 39.723735758273484];
+const CustomPoliLine = () => {
+  const mapRef = useRef(null);
+  const [center, setCenter] = useState({ lat: 36.460353, lng: 126.440674 });
+  const [map, setMap] = useState(null);
 
-const App = () => {
+  const pos: Location[] = [
+    [22.33985632172995, 114.1264425702135],
+    [33.75425930388873, -118.21881979952026], //to jpn
+  ];
+
   return (
     <div className="app-container">
-      <MapContainer center={location} zoom={zoom}>
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+      <MapContainer
+        style={{ height: '600px', width: '100%' }}
+        zoom={6}
+        center={center}
+        ref={mapRef}
+        scrollWheelZoom={true}
+      >
+        <FeatureGroup>
+          {pos?.map((mark, i) => (
+            <Marker key={i} position={mark} icon={customMarkerUserPos} />
+          ))}
 
-        <Marker position={location}>
-          <Popup>тут Кекс</Popup>
-        </Marker>
+          <Polyline positions={pos} color="red" />
+        </FeatureGroup>
+
+        <TileLayer url="http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       </MapContainer>
     </div>
   );
 };
 
-export default App;
+export default CustomPoliLine;
+
+export const customMarkerUserPos = new L.Icon({
+  iconUrl: 'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png',
+  iconSize: [15, 20],
+  iconAnchor: [5, 20],
+  popupAnchor: [2, -40],
+});
