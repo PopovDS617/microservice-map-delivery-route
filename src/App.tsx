@@ -12,22 +12,23 @@ import L from 'leaflet';
 type Location = [number, number];
 
 const CustomPoliLine = () => {
-  const mapRef = useRef(null);
   const [center, setCenter] = useState({ lat: 36.460353, lng: 126.440674 });
-  const [map, setMap] = useState(null);
 
   const pos: Location[] = [
-    [22.33985632172995, 114.1264425702135],
-    [33.75425930388873, -118.21881979952026], //to jpn
+    [36.460353, 126.440674],
+    [34.789594, 135.438084],
+    [36.460353, 126.440674],
+    [55.410343, 37.902312],
+    [36.460353, 126.440674],
+    [40.085148, 116.552407],
   ];
 
   return (
     <div className="app-container">
       <MapContainer
-        style={{ height: '600px', width: '100%' }}
-        zoom={6}
+        style={{ height: '100vh', width: '100vw' }}
+        zoom={3}
         center={center}
-        ref={mapRef}
         scrollWheelZoom={true}
       >
         <FeatureGroup>
@@ -48,7 +49,7 @@ export default CustomPoliLine;
 
 export const customMarkerUserPos = new L.Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.5.1/dist/images/marker-icon.png',
-  iconSize: [15, 20],
+  iconSize: [12, 20],
   iconAnchor: [5, 20],
   popupAnchor: [2, -40],
 });
